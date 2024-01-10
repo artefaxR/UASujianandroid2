@@ -18,9 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText edNamaDepan = (EditText) findViewById(R.id.edNamaDepan);
-        EditText edNamaBelakang = (EditText) findViewById(R.id.edNamaBelakang);
-        Button btnSimpan = (Button) findViewById(R.id.btnSimpan);
+        EditText edNamaDepan = findViewById(R.id.edNamaDepan);
+        EditText edNamaBelakang = findViewById(R.id.edNamaBelakang);
+        EditText edUmur = findViewById(R.id.edUmur);
+        Button btnSimpan = findViewById(R.id.btnSimpan);
 
         ArrayList<String> daftar_nama = new ArrayList<>();
 
@@ -31,15 +32,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String isian_nama_depan = edNamaDepan.getText().toString();
                 String isian_nama_belakang = edNamaBelakang.getText().toString();
+                String isian_umur = edUmur.getText().toString();
 
-                if(isian_nama_depan.isEmpty()){
+                if (isian_nama_depan.isEmpty() || isian_umur.isEmpty()){
                     Toast.makeText(getApplicationContext(), "Isian masih kosong", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
+                    int umur = Integer.parseInt(isian_umur);
                     String nama_lengkap = isian_nama_depan.concat(" ").concat(isian_nama_belakang);
                     daftar_nama.clear();
-                    daftar_nama.add(nama_lengkap);
+                    for (int i = 1; i <= umur; i++) {
+                        String status;
+                        if (umur < 10) {
+                            status = "Anak";
+                        } else if (umur < 20) {
+                            status = "Remaja";
+                        } else if (umur < 40) {
+                            status = "Dewasa";
+                        } else {
+                            status = "Tua";
+                        }
+                        String nama_dengan_urutan = i + ". " + nama_lengkap + "-" +status;
+                        daftar_nama.add(nama_dengan_urutan);
+                    }
                     edNamaDepan.setText("");
                     edNamaBelakang.setText("");
+                    edUmur.setText("");
                     intent_list.putStringArrayListExtra("daftar_nama", daftar_nama);
                     startActivity(intent_list);
                 }
